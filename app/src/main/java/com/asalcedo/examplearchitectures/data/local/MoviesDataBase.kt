@@ -9,6 +9,7 @@ import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.Update
 import com.asalcedo.examplearchitectures.data.Movie
+import kotlinx.coroutines.flow.Flow
 
 @Database(entities = [LocalMovie::class], version = 1)
 abstract class MoviesDataBase : RoomDatabase() {
@@ -18,7 +19,9 @@ abstract class MoviesDataBase : RoomDatabase() {
 @Dao
 interface MoviesDao {
     @Query("SELECT * FROM LocalMovie")
-    suspend fun getMovies(): List<LocalMovie>
+    //suspend fun getMovies(): List<LocalMovie>
+    // para hacer la base de datos reactiva
+    fun getMovies(): Flow<List<LocalMovie>>
 
     @Insert
     suspend fun insertAll(movies: List<LocalMovie>)
@@ -41,6 +44,14 @@ data class LocalMovie(
 )
 
 fun LocalMovie.toMovie() = Movie(
+    id = id,
+    title = title,
+    overview = overview,
+    posterPath = posterPath,
+    favorite = favorite
+)
+
+fun Movie.toLocalMovie() = LocalMovie(
     id = id,
     title = title,
     overview = overview,
