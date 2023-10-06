@@ -1,4 +1,4 @@
-package com.asalcedo.examplearchitectures
+package com.asalcedo.examplearchitectures.data.remote
 
 import retrofit2.http.GET
 

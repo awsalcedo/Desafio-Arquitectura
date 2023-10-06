@@ -1,16 +1,16 @@
-package com.asalcedo.examplearchitectures
+package com.asalcedo.examplearchitectures.ui.screens.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.asalcedo.examplearchitectures.data.remote.MoviesService
+import com.asalcedo.examplearchitectures.data.remote.ServerMovie
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
 
     // tener un estado que va hacer observado por Compose
     // mutableStateOf es específico para compose

@@ -1,4 +1,4 @@
-package com.asalcedo.examplearchitectures
+package com.asalcedo.examplearchitectures.data.remote
 
 data class ServerMovie(
     val id: Int,
