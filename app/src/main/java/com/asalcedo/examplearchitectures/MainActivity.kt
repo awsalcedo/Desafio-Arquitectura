@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.room.Room
+import com.asalcedo.examplearchitectures.data.MoviesRepository
+import com.asalcedo.examplearchitectures.data.local.LocalDataSource
 import com.asalcedo.examplearchitectures.data.local.MoviesDataBase
+import com.asalcedo.examplearchitectures.data.remote.RemoteDataSource
 import com.asalcedo.examplearchitectures.ui.screens.home.Home
 
 class MainActivity : ComponentActivity() {
@@ -25,8 +28,14 @@ class MainActivity : ComponentActivity() {
             MoviesDataBase::class.java, "movies-db"
         ).build()
 
+        val repository =
+            MoviesRepository(
+                localDataSource = LocalDataSource(db.moviesDao()),
+                remoteDataSource = RemoteDataSource()
+            )
+
         setContent {
-            Home(db.moviesDao())
+            Home(repository)
         }
     }
 }

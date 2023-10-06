@@ -3,18 +3,12 @@ package com.asalcedo.examplearchitectures.ui.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.asalcedo.examplearchitectures.data.Movie
-import com.asalcedo.examplearchitectures.data.local.MoviesDao
-import com.asalcedo.examplearchitectures.data.local.toLocalMovie
-import com.asalcedo.examplearchitectures.data.local.toMovie
-import com.asalcedo.examplearchitectures.data.remote.MoviesService
-import com.asalcedo.examplearchitectures.data.remote.toLocalMovie
+import com.asalcedo.examplearchitectures.data.MoviesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class HomeViewModel(private val dao: MoviesDao) : ViewModel() {
+class HomeViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
     // tener un estado que va hacer observado por Compose
     // mutableStateOf es específico para compose
@@ -33,37 +27,11 @@ class HomeViewModel(private val dao: MoviesDao) : ViewModel() {
 
     init {
         viewModelScope.launch {
+            _state.value = UiState(loading = true)
+            moviesRepository.requestMovies()
 
-            // verifico si hay movies en local
-            val isDbEmpty = dao.count() == 0
-
-            if (isDbEmpty) {
-                _state.value = UiState(loading = true)
-                dao.insertAll(
-                    Retrofit.Builder()
-                        .baseUrl("https://api.themoviedb.org/3/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
-                        .create(MoviesService::class.java)
-                        .getMovies()
-                        .results
-                        .map { it.toLocalMovie() }
-                )
-            }
-
-            // Al hacer la base de datos reactiva se debe recolectar esos cambios y actualizar
-            // la UI
-
-            /*_state.value = UiState(
-                loading = false,
-                movies = dao.getMovies().map { it.toMovie() }
-            )*/
-
-            dao.getMovies().collect { movies ->
-                _state.value = UiState(
-                    loading = false,
-                    movies = movies.map { it.toMovie() }
-                )
+            moviesRepository.movies.collect {
+                _state.value = UiState(movies = it)
             }
         }
     }
@@ -79,12 +47,14 @@ class HomeViewModel(private val dao: MoviesDao) : ViewModel() {
         // es decir que cuando cambie algo en la base de datos, un flow nos informe del cambio
         // se lo hace en el DAO
         viewModelScope.launch {
+            /*
             dao.updateMovie(
                 // Con la funcion copy le decimos que haga una copia de la película pero sólo
                 // que cambie el valor de favorito y principalmente porque al ser un data class,
                 // la data class por defecto es un objeto inmutable
                 movie.copy(favorite = !movie.favorite).toLocalMovie()
-            )
+            )*/
+            moviesRepository.updateMovie(movie.copy(favorite = !movie.favorite))
         }
 
     }

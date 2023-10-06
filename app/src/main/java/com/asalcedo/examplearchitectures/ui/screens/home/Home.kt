@@ -33,15 +33,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.asalcedo.examplearchitectures.data.Movie
-import com.asalcedo.examplearchitectures.data.local.MoviesDao
+import com.asalcedo.examplearchitectures.data.MoviesRepository
 import com.asalcedo.examplearchitectures.ui.theme.ExampleArchitecturesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(moviesDao: MoviesDao) {
+fun Home(moviesRepository: MoviesRepository) {
     ExampleArchitecturesTheme {
         //Recuperar el viewModel
-        val viewModel: HomeViewModel = viewModel { HomeViewModel(moviesDao) }
+        val viewModel: HomeViewModel = viewModel { HomeViewModel(moviesRepository) }
         // Para usar LiveData en compose se debe hacer una conversion en los estados para eso se debe agregar una dependencia runtime-livedata
         // val state by viewModel.state.observeAsState(MainViewModel.UiState())
 

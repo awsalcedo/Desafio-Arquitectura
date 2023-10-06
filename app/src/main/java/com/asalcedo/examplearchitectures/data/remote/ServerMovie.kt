@@ -1,5 +1,6 @@
 package com.asalcedo.examplearchitectures.data.remote
 
+import com.asalcedo.examplearchitectures.data.Movie
 import com.asalcedo.examplearchitectures.data.local.LocalMovie
 
 data class ServerMovie(
@@ -20,8 +21,16 @@ data class ServerMovie(
     val favorite: Boolean = false
 )
 
-fun ServerMovie.toLocalMovie() = LocalMovie(
+/*fun ServerMovie.toLocalMovie() = LocalMovie(
     id = 0, //Para que la base de datos genere su propio id y no usar la del servidor
+    title = title,
+    overview = overview,
+    posterPath = poster_path,
+    favorite = favorite
+)*/
+
+fun ServerMovie.toMovie() = Movie(
+    id = id,
     title = title,
     overview = overview,
     posterPath = poster_path,
