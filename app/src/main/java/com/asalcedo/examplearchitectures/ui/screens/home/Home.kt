@@ -32,15 +32,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.asalcedo.examplearchitectures.data.remote.ServerMovie
+import com.asalcedo.examplearchitectures.data.Movie
+import com.asalcedo.examplearchitectures.data.local.MoviesDao
 import com.asalcedo.examplearchitectures.ui.theme.ExampleArchitecturesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home() {
+fun Home(moviesDao: MoviesDao) {
     ExampleArchitecturesTheme {
         //Recuperar el viewModel
-        val viewModel: HomeViewModel = viewModel()
+        val viewModel: HomeViewModel = viewModel { HomeViewModel(moviesDao) }
         // Para usar LiveData en compose se debe hacer una conversion en los estados para eso se debe agregar una dependencia runtime-livedata
         // val state by viewModel.state.observeAsState(MainViewModel.UiState())
 
@@ -88,12 +89,12 @@ fun Home() {
 }
 
 @Composable
-private fun MovieItem(movie: ServerMovie, onClick: () -> Unit) {
+private fun MovieItem(movie: Movie, onClick: () -> Unit) {
     // esto hago clickeable a un composable y le informo a la parte superior de que se ha hecho click (onClick: () -> Unit)
     Column(modifier = Modifier.clickable(onClick = onClick)) {
         Box {
             AsyncImage(
-                model = "https://image.tmdb.org/t/p/w185${movie.poster_path}",
+                model = "https://image.tmdb.org/t/p/w185${movie.posterPath}",
                 contentDescription = movie.title,
                 modifier = Modifier
                     .fillMaxWidth()
