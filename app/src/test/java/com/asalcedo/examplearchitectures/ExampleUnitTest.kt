@@ -12,6 +12,16 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
+        // GIVEN (las clases deben estar en el estado inicial)
+        // Arrange
+
+        // WHEN (realizamos la acción que queremos comprobar)
+        // Act
+
+        // THEN (asserciones o comprobaciones)
+        // Assert
+
+
         assertEquals(4, 2 + 2)
     }
 }
