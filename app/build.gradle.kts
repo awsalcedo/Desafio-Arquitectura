@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     // room
     id("kotlin-kapt")
+    // hilt
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -73,6 +75,9 @@ dependencies {
     // Room
     implementation("androidx.room:room-ktx:2.5.2")
     kapt("androidx.room:room-compiler:2.5.2")
+    //DaggerHilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
     // Mockito Kotlin
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
     testImplementation("junit:junit:4.13.2")

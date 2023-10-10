@@ -3,8 +3,9 @@ package com.asalcedo.examplearchitectures.data.local
 import com.asalcedo.examplearchitectures.data.Movie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class LocalDataSource(private val dao: MoviesDao) {
+class LocalDataSource @Inject constructor(private val dao: MoviesDao) {
     val movies: Flow<List<Movie>> = dao.getMovies().map { movies ->
         movies.map { it.toMovie() }
     }
